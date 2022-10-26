@@ -6,18 +6,18 @@
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/books/{id}(id=${book.getBook_id()})}" th:object="${book}">
+<form th:method="PATCH" th:action="@{/books/{id}(id=${book.getId()})}" th:object="${book}">
     <label for="title">Введите название книги: </label>
-    <input type="text" th:field="*{book_title}" id="title"/>
-    <div style="color:red" th:if="${#fields.hasErrors('book_title')}" th:errors="*{book_title}">Ошибка в названии</div>
+    <input type="text" th:field="*{title}" id="title"/>
+    <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Ошибка в названии</div>
     <br/>
     <label for="author">Введите автора книги: </label>
-    <input type="text" th:field="*{book_author}" id="author"/>
-    <div style="color:red" th:if="${#fields.hasErrors('book_author')}" th:errors="*{book_author}">Ошибка в имени автора</div>
+    <input type="text" th:field="*{author}" id="author"/>
+    <div style="color:red" th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Ошибка в имени автора</div>
     <br/>
     <label for="year">Введите год издания книги: </label>
-    <input type="text" th:field="*{book_year_published}" id="year"/>
-    <div style="color:red" th:if="${#fields.hasErrors('book_year_published')}" th:errors="*{book_year_published}">Ошибка в году издания книги</div>
+    <input type="text" th:field="*{year}" id="year"/>
+    <div style="color:red" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Ошибка в году издания книги</div>
     <br/>
     <input type="submit" value="Обновить!"/>
 </form>

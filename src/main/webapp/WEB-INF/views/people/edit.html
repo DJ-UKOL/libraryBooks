@@ -6,16 +6,16 @@
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/people/{id}(id=${person.getPerson_id()})}" th:object="${person}">
-    <label for="name">Enter name: </label>
-    <input type="text" th:field="*{person_name}" id="name"/>
-    <div style="color:red" th:if="${#fields.hasErrors('person_name')}" th:errors="*{person_name}">Name error</div>
+<form th:method="PATCH" th:action="@{/people/{id}(id=${person.getId()})}" th:object="${person}">
+    <label for="fullName">Введите имя: </label>
+    <input type="text" th:field="*{fullName}" id="fullName"/>
+    <div style="color:red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name error</div>
     <br/>
-    <label for="age">Enter year birthday: </label>
-    <input type="text" th:field="*{person_year_birthday}" id="age"/>
-    <div style="color:red" th:if="${#fields.hasErrors('person_year_birthday')}" th:errors="*{person_year_birthday}">Age error</div>
+    <label for="yearOfBirth">Введите год рождения: </label>
+    <input type="text" th:field="*{yearOfBirth}" id="yearOfBirth"/>
+    <div style="color:red" th:if="${#fields.hasErrors('yearOfBirth')}" th:errors="*{yearOfBirth}">Year birthday error</div>
     <br/>
-    <input type="submit" value="Update!"/>
+    <input type="submit" value="Обновить!"/>
 </form>
 
 </body>

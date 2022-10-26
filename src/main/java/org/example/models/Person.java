@@ -1,48 +1,48 @@
 package org.example.models;
 
-import org.hibernate.validator.constraints.Range;
-
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class Person {
 
-    private int person_id;
-    @Pattern(regexp = "[A-ZА-Я]\\D+ [A-ZА-Я]\\D+ [A-ZА-Я]\\D+",
-            message = "Введите ФИО в правильном формате (Иванов Иван Иванович)")
-    private String person_name;
+    private int id;
+    @NotEmpty(message = "Имя не должно быть пустым")
+    @Size(min = 2, max = 100, message="Имя должно быть от 2 до 100 символов длинной")
+    private String fullName;
 
-    @Range(min = 1900, max = 2022, message = "Год рождения должен быть в формате (2022)")
-    private int person_year_birthday;
+    @Min(value = 1900, message = "Год рождения должен быть не меньше 1900")
+    private int yearOfBirth;
 
+    // Конструктор по умолчанию нужен для Spring
     public Person() {}
 
-    public Person(int person_id, String person_name, int person_year_birthday) {
-        this.person_id = person_id;
-        this.person_name = person_name;
-        this.person_year_birthday = person_year_birthday;
+    public Person(String fullName, int yearOfBirth) {
+        this.fullName = fullName;
+        this.yearOfBirth = yearOfBirth;
     }
 
-    public int getPerson_id() {
-        return person_id;
+    public int getId() {
+        return id;
     }
 
-    public void setPerson_id(int person_id) {
-        this.person_id = person_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getPerson_name() {
-        return person_name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setPerson_name(String person_name) {
-        this.person_name = person_name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public int getPerson_year_birthday() {
-        return person_year_birthday;
+    public int getYearOfBirth() {
+        return yearOfBirth;
     }
 
-    public void setPerson_year_birthday(int person_year_birthday) {
-        this.person_year_birthday = person_year_birthday;
+    public void setYearOfBirth(int yearOfBirth) {
+        this.yearOfBirth = yearOfBirth;
     }
 }

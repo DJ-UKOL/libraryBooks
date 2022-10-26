@@ -1,11 +1,13 @@
 package org.example.dao;
 
 import org.example.models.Book;
+import org.example.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class BookDAO {
@@ -22,28 +24,50 @@ public class BookDAO {
     }
 
     public Book show(int id) {
-        return jdbcTemplate.query("SELECT * FROM Book WHERE book_id=?",
+        return jdbcTemplate.query("SELECT * FROM Book WHERE id=?",
                 new BeanPropertyRowMapper<>(Book.class),
                 new Object[]{id})
                 .stream().findAny().orElse(null);
     }
 
     public void save(Book book) {
-        jdbcTemplate.update("INSERT INTO Book(book_title, book_author, book_year_published) VALUES(?, ?, ?)",
-                book.getBook_title(),
-                book.getBook_author(),
-                book.getBook_year_published());
+        jdbcTemplate.update("INSERT INTO Book(title, author, year) VALUES(?, ?, ?)",
+                book.getTitle(),
+                book.getAuthor(),
+                book.getYear());
     }
 
     public void update(int id, Book updatedBook) {
-        jdbcTemplate.update("UPDATE Book SET book_title=?, book_author=?, book_year_published=? WHERE book_id=?",
-                updatedBook.getBook_title(),
-                updatedBook.getBook_author(),
-                updatedBook.getBook_year_published(),
+        jdbcTemplate.update("UPDATE Book SET title=?, author=?, year=? WHERE id=?",
+                updatedBook.getTitle(),
+                updatedBook.getAuthor(),
+                updatedBook.getYear(),
                 id);
     }
 
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM Book WHERE book_id=?", id);
+        jdbcTemplate.update("DELETE FROM Book WHERE id=?", id);
+    }
+
+    // Join'им таблицы Book и Person и получаем человека, которому принадлежит книга с указанным id
+    public Optional<Person> getBookOwner(int id) {
+        // Выбираем все колонки таблицы Person из объединенной таблицы
+        return jdbcTemplate.query("SELECT Person.* FROM Book JOIN Person ON Book.person_id = Person.id " +
+                "WHERE Book.id=?",
+                new BeanPropertyRowMapper<>(Person.class),
+                new Object[]{id}).stream().findAny();
+    }
+
+    // Освобождаем книгу (этот метод вызывается, когда человек забирает книгу из библиотеки)
+    public void release(int id) {
+        jdbcTemplate.update("UPDATE Book SET person_id=NULL WHERE id=?",
+                id);
+    }
+
+    // Назначает книгу человеку (этот метод вызывается, когда человек забирает книгу из библиотеки)
+    public void assign(int id, Person selectedPerson) {
+        jdbcTemplate.update("UPDATE Book SET person_id=? WHERE id=?",
+                selectedPerson.getId(),
+                id);
     }
 }
